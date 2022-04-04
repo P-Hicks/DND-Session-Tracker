@@ -10,7 +10,7 @@ from tkinter import filedialog
 class NameFrame:
     
     def __init__(self, entity, window):
-        
+        self.entity = entity
         #TOP ROW
         self.window = LabelFrame(window, text = 'Name & Such', padx = 10, pady = 10)
         self.window.grid(row = 0, column = 0, rowspan = 1, columnspan = 3, padx = 10, pady = 10)
@@ -34,7 +34,7 @@ class NameFrame:
         
         self.classLabel.grid(row=1, column = 0)
         self.classEntry.grid(row=1, column = 1)
-        self.classEntry.insert(0, entity.Class)
+        self.classEntry.insert(0, entity.Class) 
         
         self.levelLabel.grid(row=0, column = 2)
         self.levelEntry.grid(row=0, column = 3)
@@ -62,6 +62,13 @@ class NameFrame:
         self.entity.level = self.levelEntry.get()
     
     def updateSheet(self):
+        
+        self.nameEntry.delete(0, "end")
+        self.raceEntry.delete(0, "end")
+        self.backgroundEntry.delete(0, "end")
+        self.alignmentEntry.delete(0, "end")
+        self.classEntry.delete(0, "end")
+        self.levelEntry.delete(0, "end")
         self.nameEntry.insert(0, self.entity.name)
         self.raceEntry.insert(0, self.entity.race)
         self.backgroundEntry.insert(0, self.entity.background)

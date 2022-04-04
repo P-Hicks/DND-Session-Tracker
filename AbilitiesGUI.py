@@ -57,12 +57,15 @@ class AbilityFrame:
     
     def updateEntity(self):
 
-        for i in range(len(self.labelframes)):
-            score = self.labelFrames[i].scoreEntry.getint()
-            self.entity.abilities.SetScore(i, score)
+        for i in range(len(self.labelFrames)):
+            score = int(self.labelFrames[i].scoreEntry.get())
+            self.entity.abilities.setScore(i, score)
+        self.entity.abilities.update()
+        
     
     def updateSheet(self):
-        for i in range(len(self.labelframes)):
+        for i in range(len(self.labelFrames)):
+            self.labelFrames[i].scoreEntry.delete(0, "end")
             self.labelFrames[i].scoreEntry.insert(0, self.entity.abilities.getScore(i))
             self.labelFrames[i].changeModifierText("({:+})".format(self.entity.abilities.getModifier(i)))
 

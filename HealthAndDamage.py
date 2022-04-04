@@ -1,6 +1,6 @@
 import entityV2
 import dice 
-
+import HealthAndDamage
 
 damageTypes = ['Slashing',
 'Piercing',
@@ -34,11 +34,14 @@ class HealthAndDamage:
 
     def __init__(self, entity):
         self.entity = entity
-        self.hitDice = 0
-        self.maxHP = 0
-        self.currentHP = 0
-        self.tempHP = 0
+        self.hitDice = "1d34"
+        self.maxHitDiceCount = self.entity.level
+        self.maxHP = 1
+        self.currentHP = 1
+        self.tempHP = 1
         self.hitDiceCount = entity.level
+        self.totalHealthPercentage = 1
+        self.realHealthPercentage = 1
 
         self.deathSavesSuccesses = 0
         self.deathSavesFailures = 0
@@ -48,27 +51,41 @@ class HealthAndDamage:
 
         self.damageResistances = []
         self.damageImmunities = []
+        self.damageVulnerabilities = []
         for i in range(len(damageTypes)):
             self.damageResistances.append(False)
             self.damageImmunities.append(False)
+            self.damageVulnerabilities.append(False)
+
+        self.updateHealth()
+        #print("HEALTH MADE")
         
     def getResistance(self, damage):    
         if (isinstance(damage, str)):
             damage = damageTypeDictionary.get(damage)
         
         if (self.damageImmunities[damage]):
-            return 1
+            return 0
         elif (self.damageResistances[damage]):
             return 0.5
+        elif self.damageVulnerabilities[damage]:
+            return 2
         else:
-            return 0
+            return 1
     
     def setImmunity(self, damage, value):    
         if (isinstance(damage, str)):
             damage = damageTypeDictionary.get(damage)
         
         self.damageImmunities[damage] = value
+    
+    def setVulnerability(self, damage, value):    
+        if (isinstance(damage, str)):
+            damage = damageTypeDictionary.get(damage)
         
+        self.damageVulnerabilities[damage] = value
+
+
     def setResistance(self, damage, value):    
         if (isinstance(damage, str)):
             damage = damageTypeDictionary.get(damage)
@@ -79,10 +96,12 @@ class HealthAndDamage:
         if (type):
             res = self.getResistance(type)
         else:
-            res = 0
+            res = 1
         
-        self.currentHP -= amount * (1-res)
-    
+        self.takeHealth(amount * res)
+
+        self.updateHealth()
+
     def takeHealth(self, amount, critical = False):
         if (self.tempHP > 0):
             if (amount < self.tempHP):
@@ -113,32 +132,34 @@ class HealthAndDamage:
                     self.currentHP = 0
                     amount = 0
         
-        self.isDead()
+        self.updateIsDead()
+
+        self.updateHealth()
     
     def addTempHP(self, amount):
         self.tempHP += amount
+
+        self.updateHealth()
     
     def addHP(self, amount):
         self.currentHP += amount
+
+        self.updateHealth()
+
+    def updateHealth(self):
+        #print("HET")
+        self.totalHealthPercentage = (((self.currentHP + self.tempHP) / self.maxHP) * 100)
+        self.realHealthPercentage = ((self.currentHP / self.maxHP) * 100)
+        #print("Total Health % : {} \n Real Health % : {}".format(self.totalHealthPercentage, self.realHealthPercentage))
+        self.updateIsDead()
     
-    def isDead(self):
+    def updateIsDead(self):
         if (self.currentHP <= 0 and self.tempHP <= 0 and self.deathSavesFailures >= 3):
             self.isDead = True
             return True
         else:
             self.isDead = False
             return False
-
-
-    
-
-
-
-            
-
-
-    def updateHealth(self):
-        return
 
 
         
