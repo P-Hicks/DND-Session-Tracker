@@ -26,29 +26,6 @@ class SkillsFrame:
 
     def __init__(self, entity, window):
         #Abilities Area
-        """#Skills
-        skills = LabelFrame(entity_win, text = 'Skills', padx = 10, pady = 10)
-        skills.grid(row = 3, column = 1, rowspan = 1, columnspan = 1, padx = 10, pady = 10, stick = 'n')
-        
-        count = 0
-        gui_skills_list = []
-        #boollist = [] up higher
-        for i in entity.skills_list:
-            skill_label = Label(skills, text = "{}: ".format(i[0]))
-            skill_entry = Entry(skills, width = 3)
-            skill_entry.insert(0, "{:+}".format(i[1]))
-            skill_label.grid(row=count, column = 1)
-            boollist.append(BooleanVar())
-            skill_save_checkbox = Checkbutton(skills, variable = boollist[count], onvalue = True, offvalue = False)
-            skill_save_checkbox.grid(row=count, column = 0)
-            skill_entry.grid(row=count, column=2)
-            if i[2] == True:
-                skill_save_checkbox.select()
-            gui_skills_list.append([skill_save_checkbox, skill_label, boollist[count], skill_entry])
-            count += 1"""
-        
-        
-        
         self.entity = entity
         self.window = LabelFrame(window, text = 'Skills', padx = 10, pady = 10)
 
@@ -62,27 +39,32 @@ class SkillsFrame:
 
             
             text = StringVar()
-            label = Label(self.window, textvariable = text)
+            label = Label(self.window, text = "")
             label.grid(row=i, column = 1)
             
-            boolVal = BooleanVar()
-            checkbox = Checkbutton(self.window, variable = boolVal, onvalue = True, offvalue = False)
+            boolVal = IntVar(self.window, 0)
+            checkbox = Checkbutton(self.window, variable = boolVal, onvalue = 1, offvalue = 0)
             checkbox.grid(row=i, column = 0)
             
             object = SkillsFrame.Row(label, text, boolVal, checkbox)
             self.rows.append(object)
         
         self.updateSheet()
+
+
+                
     
     def updateEntity(self):
         for i in range(len(Skills.skillsNames)):
-            self.entity.abilities.skills.setProficiency(self.rows[i].boolean.get())
+            self.entity.abilities.skills.setProficiency(i, self.rows[i].boolean.get())
+            #print(Skills.skillsNames[i] + " : " + str(self.rows[i].boolean.get()))
+        
             
     def updateSheet(self):
         for i in range(len(self.rows)):
-            self.rows[i].textVariable.set("{} : ({:+})".format(Skills.skillsNames[i], self.entity.abilities.skills.getModifier(i)))
-            if (self.entity.abilities.skills.getProficiency(i) and not self.rows[i].boolean.get()):
-                self.rows[i].checkbox.select()
-            elif (not self.entity.abilities.skills.getProficiency(i) and self.rows[i].boolean.get()):
-                self.rows[i].checkbox.select()
-                      
+            #self.rows[i].textVariable.set("{} : ({:+})".format(Skills.skillsNames[i], self.entity.abilities.skills.getModifier(i)))
+            self.rows[i].label.config(text = "{} : ({:+})".format(Skills.skillsNames[i], self.entity.abilities.skills.getModifier(i)))
+            if (self.entity.abilities.skills.getProficiency(i)):
+                self.rows[i].checkBox.select()
+            elif (not self.entity.abilities.skills.getProficiency(i)):
+                self.rows[i].checkBox.deselect()

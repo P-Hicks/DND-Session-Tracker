@@ -49,12 +49,13 @@ class CurrencyFrame:
     
     def updateEntity(self):
 
-        for i in range(len(self.labelframes)):
-            amount = self.labelFrames[i].amountEntry.getint()
+        for i in range(len(self.labelFrames)):
+            amount = int(self.labelFrames[i].amountEntry.get())
             self.entity.currency.setAmount(i, amount)
     
     def updateSheet(self):
         for i in range(5):
+            self.labelFrames[i].amountEntry.delete(0, "end")
             self.labelFrames[i].amountEntry.insert(0, self.entity.currency.getAmount(i))
 
 

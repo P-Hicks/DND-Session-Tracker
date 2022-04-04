@@ -15,28 +15,18 @@ class Abilities:
     def __init__(self, entity = None, strength = 10, strengthProficiency=False, dexterity = 10, dexterityProficiency = False, constitution = 10, constitutionProficiency = False, intelligence = 10, intelligenceProficiency = False, wisdom = 10, wisdomProficiency = False, charisma = 10, charismaProficiency = False, abilityList = None, proficiencyList = None):
         self.entity = entity
 
+        self.abiilityScores = [strength, dexterity, constitution, 
+                                wisdom, intelligence, charisma]
         
-
-        self.strength = strength
-        self.dexterity = dexterity
-        self.constitution = constitution
-        self.intelligence = intelligence
-        self.wisdom = wisdom
-        self.charisma = charisma
+        self.proficiences = [strengthProficiency, dexterityProficiency, constitutionProficiency,  
+                            wisdomProficiency, intelligenceProficiency, charismaProficiency]
 
         if (abilityList != None):
             for i in range(len(abilityList)):
                 self.setScore(i, abilityList[i])
 
         self.updateAbilityModifiers()
-
-        self.strengthProficiency = strengthProficiency
-        self.dexterityProficiency = dexterityProficiency
-        self.constitutionProficiency = constitutionProficiency
-        self.intelligenceProficiency = intelligenceProficiency
-        self.wisdomProficiency = wisdomProficiency
-        self.charismaProficiency = charismaProficiency
-        
+   
         if (proficiencyList != None):
             for i in range(len(proficiencyList)):
                 self.setProficiency(i, proficiencyList[i])
@@ -45,11 +35,10 @@ class Abilities:
         self.skills = Skills.Skills(self, self.proficiencyBonus)
 
     def scoresToArray(self):
-        return [self.strength, self.dexterity, self.constitution,  self.wisdom, self.intelligence, self.charisma]
-
+        return self.abiilityScores
     def proficienciesToArray(self):
-        return [self.strengthProficiency, self.dexterityProficiency, self.constitutionProficiency,  self.wisdomProficiency, self.intelligenceProficiency, self.charismaProficiency]
-    
+        return self.proficiences
+
     def passiveCheck(self, ability):
         return 10 + self.checkModifier(ability)
 
@@ -59,18 +48,7 @@ class Abilities:
         else: 
             id = ability
         
-        if (id == 0):
-            return self.strengthModifier
-        elif (id == 1):
-            return self.dexterityModifier
-        elif (id == 2):
-            return self.constitutionModifier
-        elif (id == 3):
-            return self.wisdomModifier
-        elif (id == 4):
-            return self.intelligenceModifier
-        elif (id == 5):
-            return self.charismaModifier
+        return self.abilityModifiers[id]
 
     def getProficiency(self, ability):
         if (isinstance(ability, str)):
@@ -78,18 +56,7 @@ class Abilities:
         else: 
             id = ability
         
-        if (id == 0):
-            return self.strengthProficiency
-        elif (id == 1):
-            return self.dexterityProficiency
-        elif (id == 2):
-            return self.constitutionProficiency
-        elif (id == 3):
-            return self.wisdomProficiency
-        elif (id == 4):
-            return self.intelligenceProficiency
-        elif (id == 5):
-            return self.charismaProficiency
+        return self.proficiences[id]
 
     def getSavingThrowModifier(self, ability):
         
@@ -99,37 +66,16 @@ class Abilities:
         else: 
             id = ability
 
-        if (id == 0):
-            return self.strengthModifier + self.strengthProficiency * self.proficiencyBonus
-        elif (id == 1):
-            return self.dexterityModifier + self.dexterityProficiency * self.proficiencyBonus
-        elif (id == 2):
-            return self.constitutionModifier + self.constitutionProficiency * self.proficiencyBonus
-        elif (id == 3):
-            return self.wisdomModifier + self.wisdomProficiency * self.proficiencyBonus
-        elif (id == 4):
-            return self.intelligenceModifier + self.intelligenceProficiency * self.proficiencyBonus
-        elif (id == 5):
-            return self.charismaModifier + self.charismaProficiency * self.proficiencyBonus
-
+        return self.abilityModifiers[id] + (self.proficiences[id] * self.proficiencyBonus)
+        
     def getScore(self, ability):
             if (isinstance(ability, str)):
                 id = abilitiesDictionary.get(ability)
             else: 
                 id = ability
             
-            if (id == 0):
-                return self.strength
-            elif (id == 1):
-                return self.dexterity
-            elif (id == 2):
-                return self.constitution
-            elif (id == 3):
-                return self.wisdom
-            elif (id == 4):
-                return self.intelligence
-            elif (id == 5):
-                return self.charisma
+            
+            return self.abiilityScores[id]
 
     def setScore(self, ability, score):
             if (isinstance(ability, str)):
@@ -137,18 +83,8 @@ class Abilities:
             else: 
                 id = ability
             
-            if (id == 0):
-                self.strength = score
-            elif (id == 1):
-                self.dexterity = score
-            elif (id == 2):
-                self.constitution = score
-            elif (id == 3):
-                self.wisdom = score
-            elif (id == 4):
-                self.intelligence = score
-            elif (id == 5):
-                self.charisma = score
+            
+            self.abiilityScores[id] = score
 
     def setProficiency(self, ability, proficiency):
             if (isinstance(ability, str)):
@@ -156,30 +92,21 @@ class Abilities:
             else: 
                 id = ability
             
-            if (id == 0):
-                self.strengthProficiency = proficiency
-            elif (id == 1):
-                self.dexterityProficiency = proficiency
-            elif (id == 2):
-                self.constitutionProficiency = proficiency
-            elif (id == 3):
-                self.wisdomProficiency = proficiency
-            elif (id == 4):
-                self.intelligenceProficiency = proficiency
-            elif (id == 5):
-                self.charismaProficiency = proficiency
+            self.proficiences[id] = proficiency
 
     def randomGen():
         a = Abilities()
         return a
 
+    def update(self):
+        self.updateAbilityModifiers()
+        self.skills.update()
+
+
     def updateAbilityModifiers(self):
-        self.strengthModifier = int((self.strength-10)/2)
-        self.dexterityModifier = int((self.dexterity-10)/2)
-        self.constitutionModifier = int((self.constitution-10)/2)
-        self.intelligenceModifier = int((self.intelligence-10)/2)
-        self.wisdomModifier = int((self.wisdom-10)/2)
-        self.charismaModifier = int((self.charisma-10)/2)
+        self.abilityModifiers = self.abiilityScores.copy()
+        for i in range(len(self.abilityModifiers)):
+            self.abilityModifiers[i] = int((self.abilityModifiers[i] - 10)/2)
 
     def changeProficiencyBonus(self):
         self.proficiencyBonus = self.entity.proficiencyBonus

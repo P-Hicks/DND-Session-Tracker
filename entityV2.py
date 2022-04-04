@@ -16,10 +16,12 @@ version = "2.1"
 class Entity:
 
     def __init__(self, randomize=False, name=None, level = 1, abilityList=None, proficiencyList = None, race=None, type=None, health=None):
+        self.isPlayer = False
+        self.player = ""
         self.level = level
         self.proficiencyBonus = 2 + math.floor(self.level/4)
-        self.health = health
-        self.max_health = self.health
+        self.health = HealthAndDamage.HealthAndDamage(self)
+        #print("ENTITY MADE")
         """self.race = race
         self.type = type
         self.name = name"""
@@ -38,6 +40,8 @@ class Entity:
             self.abilities = Abilities.Abilities(entity = self, abilityList = abilityList, proficiencyList=proficiencyList)
         else: 
             self.abilities = Abilities.Abilities(entity = self)
+
+        
         
 
 
@@ -71,7 +75,7 @@ class Entity:
     def loadBin(fileName):
         
         
-        file = open(fileName + '.dat', 'rb')
+        file = open(fileName, 'rb')
         self = pickle.load(file)
         if self.version != version:
             print("Warning! FILE ({}) is outdated and of version {}. Current program is version {}.".format(fileName, self.version, version))
@@ -81,7 +85,7 @@ class Entity:
     def saveBin(self, fileName = None):
         if fileName == None :
             fileName = self.name
-        file = open(fileName + '.dat', 'wb')
+        file = open(fileName, 'wb')
         pickle.dump(self, file)
         file.close()
         
