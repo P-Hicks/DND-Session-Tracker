@@ -1,11 +1,11 @@
 import math
 import random
-import dice
-import entityV2
+import Dice.dice
+import Entity
 import pickle
 from tkinter import *
 from tkinter import filedialog
-import Currency
+import Entity.Currency as Currency
 
 class CurrencyFrame:
 

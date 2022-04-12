@@ -1,11 +1,12 @@
 import math
 import random
-import dice
-import entityV2
+import Dice.dice as Dice
+import Entity
+import Entity.entityV2
 import pickle
 from tkinter import *
 from tkinter import filedialog
-import Abilities
+import Entity.Abilities as Abilities
 
 class AbilityFrame:
 

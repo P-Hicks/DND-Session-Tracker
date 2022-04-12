@@ -1,12 +1,11 @@
 import math
 import random
-import dice
-import entityV2
+import Entity.entityV2
 import pickle
 from tkinter import *
 from tkinter import filedialog
-import EntityStatsWindowGUI
-import DamageWindow
+import CharacterSheetGUI.EntityStatsWindowGUI as EntityStatsWindowGUI
+import SessionGUI.DamageWindow.DamageWindow as DamageWindow
 
 class EntityRow:
     def __init__(self, window, entity):
@@ -20,6 +19,7 @@ class EntityRow:
         self.effectsButton = Button(self.frame, text ="Effects (?)", command = self.effectsWin)
         self.boolVal = IntVar(self.frame, 0)
         self.checkbox = Checkbutton(self.frame, variable = self.boolVal, onvalue = 1, offvalue = 0)
+        
 
         self.checkbox.grid(row=0, column = 0)
         self.nameLabel.grid(row = 0, column = 1)
@@ -30,6 +30,13 @@ class EntityRow:
 
     def openChar(self):
         self.win = EntityStatsWindowGUI.CharSheetWindow(self.entity, row = self)
+        
+
+    def checkbuttonToggle(self):
+        if self.checked():
+            self.checkbox.deselect()
+        else:
+            self.checkbox.select()
 
     def update(self):
         #print("ROW")

@@ -1,12 +1,12 @@
 
 import math
 from tkinter.filedialog import LoadFileDialog, SaveFileDialog
-import dice
+import Dice.dice
 import pickle
-import Skills
-import Abilities
-import Currency
-import HealthAndDamage
+import Entity.Skills as Skills
+import Entity.Abilities as Abilities
+import Entity.Currency as Currency
+import Entity.HealthAndDamage as HealthAndDamage
 
 
 version = "2.1"
@@ -63,8 +63,8 @@ class Entity:
     def update_saving_throws(self):
         print()
 
-    def new_character(self):
-        print()
+    def new_character():
+        return Entity()
 
     def save():
         return 1

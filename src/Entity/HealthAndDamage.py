@@ -1,6 +1,5 @@
-import entityV2
-import dice 
-import HealthAndDamage
+import Entity.entityV2
+import Dice.dice
 
 damageTypes = ['Slashing',
 'Piercing',
@@ -38,7 +37,7 @@ class HealthAndDamage:
         self.maxHitDiceCount = self.entity.level
         self.maxHP = 1
         self.currentHP = 1
-        self.tempHP = 1
+        self.tempHP = 0
         self.hitDiceCount = entity.level
         self.totalHealthPercentage = 1
         self.realHealthPercentage = 1

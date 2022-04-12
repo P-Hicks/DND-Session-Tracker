@@ -1,5 +1,5 @@
-import Skills
-import entityV2
+import Entity.Skills as Skills
+import Entity.entityV2
 
 abilitiesNames = ["Strength", "Dexterity", "Constitution", "Wisdom", "Intelligence", "Charisma"]
 

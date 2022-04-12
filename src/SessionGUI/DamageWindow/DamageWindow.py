@@ -1,4 +1,4 @@
-import HealthAndDamage
+import Entity.HealthAndDamage
 from tkinter import *
 
 class DamageWindow:

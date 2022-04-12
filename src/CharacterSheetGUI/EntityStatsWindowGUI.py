@@ -1,19 +1,18 @@
 import math
 import random
 import tkinter
-from tokenize import Name
-import dice
-import entityV2
+import Dice.dice
+import Entity.entityV2
 import pickle
 from tkinter import *
 from tkinter import filedialog
 import datetime
-import AbilitiesGUI
-import SkillsGUI
-import SavingThrowsGUI
-import NameBarGUI
-import CurrencyGUI
-import HealthAndDamageGUI
+import CharacterSheetGUI.AbilitiesGUI as AbilitiesGUI
+import CharacterSheetGUI.SkillsGUI as SkillsGUI
+import CharacterSheetGUI.SavingThrowsGUI as SavingThrowsGUI
+import CharacterSheetGUI.NameBarGUI as NameBarGUI
+import CharacterSheetGUI.CurrencyGUI as CurrencyGUI
+import CharacterSheetGUI.HealthAndDamageGUI as HealthAndDamageGUI
 from tkinter.filedialog import asksaveasfile
 
 class CharSheetWindow:
@@ -49,8 +48,8 @@ class CharSheetWindow:
         self.button = Button(self.window ,text = "Save Changes", command=self.saveChanges)
         self.button.grid(row = 0, column = 8)
 
-        self.button = Button(self.window ,text = "Update Sheet", command=self.updateSheet)
-        self.button.grid(row = 0, column = 9)
+        #self.button = Button(self.window ,text = "Update Sheet", command=self.updateSheet)
+        #self.button.grid(row = 0, column = 9)
 
         self.window.mainloop()
 
@@ -67,8 +66,7 @@ class CharSheetWindow:
         self.skills.updateEntity()
         self.currency.updateEntity()
         self.health.updateEntity()
-        if self.row:
-            self.row.update()
+        self.updateSheet()
 
     def updateSheet(self):
         self.row.update()
